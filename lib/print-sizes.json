@@ -1,0 +1,526 @@
+{
+  "version": 1,
+  "source": "Copied from sizeOptions in app/page.tsx, app/shop/page.tsx, app/send/page.tsx (v2.3.0). This file is now the single source of truth.",
+  "rule": "Each size is a MAX box, width x height in inches. Artwork keeps its proportions and is scaled to the largest size that fits inside the box. A single number means a square box.",
+  "printDpi": 300,
+  "placements": [
+    {
+      "id": "Left Chest",
+      "recommended": "Standard Left Chest · 3.75 × 3.75 in",
+      "sizes": [
+        {
+          "label": "Youth Left Chest · 3 × 3 in",
+          "name": "Youth Left Chest",
+          "maxWidthIn": 3.0,
+          "maxHeightIn": 3.0,
+          "maxWidthPx": 900,
+          "maxHeightPx": 900
+        },
+        {
+          "label": "Standard Left Chest · 3.75 × 3.75 in",
+          "name": "Standard Left Chest",
+          "maxWidthIn": 3.75,
+          "maxHeightIn": 3.75,
+          "maxWidthPx": 1125,
+          "maxHeightPx": 1125
+        },
+        {
+          "label": "Oversized Left Chest · 4.5 × 4.5 in",
+          "name": "Oversized Left Chest",
+          "maxWidthIn": 4.5,
+          "maxHeightIn": 4.5,
+          "maxWidthPx": 1350,
+          "maxHeightPx": 1350
+        }
+      ]
+    },
+    {
+      "id": "Toddler Shirt",
+      "recommended": "4T · 6.5 × 7 in",
+      "sizes": [
+        {
+          "label": "2T · 5.5 × 6 in",
+          "name": "2T",
+          "maxWidthIn": 5.5,
+          "maxHeightIn": 6.0,
+          "maxWidthPx": 1650,
+          "maxHeightPx": 1800
+        },
+        {
+          "label": "3T · 6 × 6.5 in",
+          "name": "3T",
+          "maxWidthIn": 6.0,
+          "maxHeightIn": 6.5,
+          "maxWidthPx": 1800,
+          "maxHeightPx": 1950
+        },
+        {
+          "label": "4T · 6.5 × 7 in",
+          "name": "4T",
+          "maxWidthIn": 6.5,
+          "maxHeightIn": 7.0,
+          "maxWidthPx": 1950,
+          "maxHeightPx": 2100
+        },
+        {
+          "label": "5T · 6.5 × 7 in",
+          "name": "5T",
+          "maxWidthIn": 6.5,
+          "maxHeightIn": 7.0,
+          "maxWidthPx": 1950,
+          "maxHeightPx": 2100
+        }
+      ]
+    },
+    {
+      "id": "Youth Shirt",
+      "recommended": "Small · 8.5 × 9 in",
+      "sizes": [
+        {
+          "label": "XS · 7.5 × 8 in",
+          "name": "XS",
+          "maxWidthIn": 7.5,
+          "maxHeightIn": 8.0,
+          "maxWidthPx": 2250,
+          "maxHeightPx": 2400
+        },
+        {
+          "label": "Small · 8.5 × 9 in",
+          "name": "Small",
+          "maxWidthIn": 8.5,
+          "maxHeightIn": 9.0,
+          "maxWidthPx": 2550,
+          "maxHeightPx": 2700
+        },
+        {
+          "label": "Medium · 9.25 × 10 in",
+          "name": "Medium",
+          "maxWidthIn": 9.25,
+          "maxHeightIn": 10.0,
+          "maxWidthPx": 2775,
+          "maxHeightPx": 3000
+        },
+        {
+          "label": "Large · 9.75 × 11 in",
+          "name": "Large",
+          "maxWidthIn": 9.75,
+          "maxHeightIn": 11.0,
+          "maxWidthPx": 2925,
+          "maxHeightPx": 3300
+        }
+      ]
+    },
+    {
+      "id": "Adult Shirt",
+      "recommended": "Medium · 10.5 × 12 in",
+      "sizes": [
+        {
+          "label": "Small · 10 × 12 in",
+          "name": "Small",
+          "maxWidthIn": 10.0,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3000,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "Medium · 10.5 × 12 in",
+          "name": "Medium",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "Large · 10.5 × 12 in",
+          "name": "Large",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "XL · 10.5 × 12 in",
+          "name": "XL",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "2XL · 12.5 × 13 in",
+          "name": "2XL",
+          "maxWidthIn": 12.5,
+          "maxHeightIn": 13.0,
+          "maxWidthPx": 3750,
+          "maxHeightPx": 3900
+        },
+        {
+          "label": "3XL · 13.5 × 14 in",
+          "name": "3XL",
+          "maxWidthIn": 13.5,
+          "maxHeightIn": 14.0,
+          "maxWidthPx": 4050,
+          "maxHeightPx": 4200
+        }
+      ]
+    },
+    {
+      "id": "Hoodie Front",
+      "recommended": "Medium · 10.5 × 11 in",
+      "sizes": [
+        {
+          "label": "Small · 10.5 × 10 in",
+          "name": "Small",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 10.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3000
+        },
+        {
+          "label": "Medium · 10.5 × 11 in",
+          "name": "Medium",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 11.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3300
+        },
+        {
+          "label": "Large · 10.5 × 12 in",
+          "name": "Large",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "XL · 10.5 × 12 in",
+          "name": "XL",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "2XL · 12 × 13 in",
+          "name": "2XL",
+          "maxWidthIn": 12.0,
+          "maxHeightIn": 13.0,
+          "maxWidthPx": 3600,
+          "maxHeightPx": 3900
+        },
+        {
+          "label": "3XL · 13 × 15 in",
+          "name": "3XL",
+          "maxWidthIn": 13.0,
+          "maxHeightIn": 15.0,
+          "maxWidthPx": 3900,
+          "maxHeightPx": 4500
+        },
+        {
+          "label": "4XL · 14 × 15 in",
+          "name": "4XL",
+          "maxWidthIn": 14.0,
+          "maxHeightIn": 15.0,
+          "maxWidthPx": 4200,
+          "maxHeightPx": 4500
+        }
+      ]
+    },
+    {
+      "id": "Hoodie Back",
+      "recommended": "Medium · 10.5 × 12 in",
+      "sizes": [
+        {
+          "label": "Small · 10.5 × 12 in",
+          "name": "Small",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "Medium · 10.5 × 12 in",
+          "name": "Medium",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "Large · 10.5 × 12 in",
+          "name": "Large",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "XL · 10.5 × 12 in",
+          "name": "XL",
+          "maxWidthIn": 10.5,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3150,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "2XL · 12 × 14 in",
+          "name": "2XL",
+          "maxWidthIn": 12.0,
+          "maxHeightIn": 14.0,
+          "maxWidthPx": 3600,
+          "maxHeightPx": 4200
+        },
+        {
+          "label": "3XL · 13 × 15 in",
+          "name": "3XL",
+          "maxWidthIn": 13.0,
+          "maxHeightIn": 15.0,
+          "maxWidthPx": 3900,
+          "maxHeightPx": 4500
+        },
+        {
+          "label": "4XL · 14 × 16 in",
+          "name": "4XL",
+          "maxWidthIn": 14.0,
+          "maxHeightIn": 16.0,
+          "maxWidthPx": 4200,
+          "maxHeightPx": 4800
+        }
+      ]
+    },
+    {
+      "id": "Hat",
+      "recommended": "Medium · 4 in",
+      "sizes": [
+        {
+          "label": "Small · 3 in",
+          "name": "Small",
+          "maxWidthIn": 3.0,
+          "maxHeightIn": 3.0,
+          "maxWidthPx": 900,
+          "maxHeightPx": 900
+        },
+        {
+          "label": "Medium · 4 in",
+          "name": "Medium",
+          "maxWidthIn": 4.0,
+          "maxHeightIn": 4.0,
+          "maxWidthPx": 1200,
+          "maxHeightPx": 1200
+        },
+        {
+          "label": "Large · 5 in",
+          "name": "Large",
+          "maxWidthIn": 5.0,
+          "maxHeightIn": 5.0,
+          "maxWidthPx": 1500,
+          "maxHeightPx": 1500
+        }
+      ]
+    },
+    {
+      "id": "Sleeve",
+      "recommended": "10.5 in",
+      "sizes": [
+        {
+          "label": "3 in",
+          "name": "3 in",
+          "maxWidthIn": 3.0,
+          "maxHeightIn": 3.0,
+          "maxWidthPx": 900,
+          "maxHeightPx": 900
+        },
+        {
+          "label": "3.5 in",
+          "name": "3.5 in",
+          "maxWidthIn": 3.5,
+          "maxHeightIn": 3.5,
+          "maxWidthPx": 1050,
+          "maxHeightPx": 1050
+        },
+        {
+          "label": "4 in",
+          "name": "4 in",
+          "maxWidthIn": 4.0,
+          "maxHeightIn": 4.0,
+          "maxWidthPx": 1200,
+          "maxHeightPx": 1200
+        },
+        {
+          "label": "4.5 in",
+          "name": "4.5 in",
+          "maxWidthIn": 4.5,
+          "maxHeightIn": 4.5,
+          "maxWidthPx": 1350,
+          "maxHeightPx": 1350
+        },
+        {
+          "label": "5 in",
+          "name": "5 in",
+          "maxWidthIn": 5.0,
+          "maxHeightIn": 5.0,
+          "maxWidthPx": 1500,
+          "maxHeightPx": 1500
+        }
+      ]
+    },
+    {
+      "id": "Custom",
+      "recommended": "10.5 in",
+      "sizes": [
+        {
+          "label": "3 in",
+          "name": "3 in",
+          "maxWidthIn": 3.0,
+          "maxHeightIn": 3.0,
+          "maxWidthPx": 900,
+          "maxHeightPx": 900
+        },
+        {
+          "label": "4 in",
+          "name": "4 in",
+          "maxWidthIn": 4.0,
+          "maxHeightIn": 4.0,
+          "maxWidthPx": 1200,
+          "maxHeightPx": 1200
+        },
+        {
+          "label": "5 in",
+          "name": "5 in",
+          "maxWidthIn": 5.0,
+          "maxHeightIn": 5.0,
+          "maxWidthPx": 1500,
+          "maxHeightPx": 1500
+        },
+        {
+          "label": "6 in",
+          "name": "6 in",
+          "maxWidthIn": 6.0,
+          "maxHeightIn": 6.0,
+          "maxWidthPx": 1800,
+          "maxHeightPx": 1800
+        },
+        {
+          "label": "8 in",
+          "name": "8 in",
+          "maxWidthIn": 8.0,
+          "maxHeightIn": 8.0,
+          "maxWidthPx": 2400,
+          "maxHeightPx": 2400
+        },
+        {
+          "label": "10 in",
+          "name": "10 in",
+          "maxWidthIn": 10.0,
+          "maxHeightIn": 10.0,
+          "maxWidthPx": 3000,
+          "maxHeightPx": 3000
+        },
+        {
+          "label": "12 in",
+          "name": "12 in",
+          "maxWidthIn": 12.0,
+          "maxHeightIn": 12.0,
+          "maxWidthPx": 3600,
+          "maxHeightPx": 3600
+        },
+        {
+          "label": "14 in",
+          "name": "14 in",
+          "maxWidthIn": 14.0,
+          "maxHeightIn": 14.0,
+          "maxWidthPx": 4200,
+          "maxHeightPx": 4200
+        }
+      ]
+    }
+  ],
+  "fallbackSizes": [
+    {
+      "label": "3 in",
+      "maxWidthIn": 3.0,
+      "maxHeightIn": 3.0
+    },
+    {
+      "label": "4 in",
+      "maxWidthIn": 4.0,
+      "maxHeightIn": 4.0
+    },
+    {
+      "label": "5 in",
+      "maxWidthIn": 5.0,
+      "maxHeightIn": 5.0
+    },
+    {
+      "label": "6 in",
+      "maxWidthIn": 6.0,
+      "maxHeightIn": 6.0
+    },
+    {
+      "label": "10.5 in",
+      "maxWidthIn": 10.5,
+      "maxHeightIn": 10.5
+    },
+    {
+      "label": "12 in",
+      "maxWidthIn": 12.0,
+      "maxHeightIn": 12.0
+    }
+  ],
+  "customPlacement": {
+    "id": "Custom",
+    "maxWidthIn": 22.3,
+    "maxHeightIn": 199
+  },
+  "gangSheet": {
+    "filmWidthIn": 24,
+    "printableWidthIn": 22.3,
+    "minGapIn": 0.125,
+    "preferredGapIn": 0.25,
+    "maxSheetLengthIn": 200,
+    "blockBelowDpi": 100,
+    "warnBelowDpi": 150,
+    "sheetTiers": [
+      {
+        "lengthIn": 12,
+        "price": 8
+      },
+      {
+        "lengthIn": 24,
+        "price": 15
+      },
+      {
+        "lengthIn": 36,
+        "price": 24
+      },
+      {
+        "lengthIn": 48,
+        "price": 30
+      },
+      {
+        "lengthIn": 60,
+        "price": 40
+      },
+      {
+        "lengthIn": 72,
+        "price": 48
+      },
+      {
+        "lengthIn": 100,
+        "price": 60
+      },
+      {
+        "lengthIn": 120,
+        "price": 70
+      },
+      {
+        "lengthIn": 150,
+        "price": 90
+      },
+      {
+        "lengthIn": 200,
+        "price": 115
+      }
+    ]
+  }
+}

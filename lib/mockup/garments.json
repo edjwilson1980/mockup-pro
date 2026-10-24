@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "note": "Calibration for the master shirt photos in public/mockup-pro/. All pixel values are in the 1000 x 1250 master image. Measured 2026-10-12: 482 px across the chest (1 in below the armholes) = 22 in, Gildan 5000 size L.",
+  "garments": [
+    {
+      "id": "gildan-5000",
+      "name": "Gildan 5000 Heavy Cotton Tee",
+      "short": "T-shirt",
+      "colorsFile": "lib/mockup/gildan-5000-colors.json",
+      "imageWidthPx": 1000,
+      "imageHeightPx": 1250,
+      "pxPerInch": 21.909,
+      "calibratedSize": "L",
+      "chestFlatIn": { "S": 18, "M": 20, "L": 22, "XL": 24, "2XL": 26, "3XL": 28, "4XL": 30, "5XL": 32 },
+      "views": {
+        "front": {
+          "foldmap": "/mockup-pro/gildan-5000/front-foldmap.png",
+          "white": "/mockup-pro/gildan-5000/front-white.png",
+          "collarBottomY": 184,
+          "centerX": 505
+        },
+        "back": {
+          "foldmap": "/mockup-pro/gildan-5000/back-foldmap.png",
+          "white": "/mockup-pro/gildan-5000/back-white.png",
+          "collarBottomY": 125,
+          "centerX": 498
+        },
+        "side": {
+          "foldmap": "/mockup-pro/gildan-5000/side-foldmap.png",
+          "white": "/mockup-pro/gildan-5000/side-white.png",
+          "sleeveCenterX": 470,
+          "sleeveTopY": 300
+        }
+      }
+    },
+    {
+      "id": "gildan-18500",
+      "name": "Gildan 18500 Heavy Blend Hoodie",
+      "short": "Hoodie",
+      "colorsFile": "lib/mockup/gildan-18500-colors.json",
+      "imageWidthPx": 1000,
+      "imageHeightPx": 1250,
+      "pxPerInch": 22.7,
+      "calibratedSize": "L",
+      "calibrationNote": "Built 2026-10-14 from black front/back photos (scripts/make-foldmap.mjs, gain 1.2, back scaled 1.065). Body ~545 px across near the hem = 24 in (18500 size L body width; confirm on Gildan's chart).",
+      "chestFlatIn": { "S": 20, "M": 22, "L": 24, "XL": 26, "2XL": 28, "3XL": 30, "4XL": 32, "5XL": 34 },
+      "views": {
+        "front": {
+          "foldmap": "/mockup-pro/gildan-18500/front-foldmap.png",
+          "collarBottomY": 240,
+          "centerX": 510
+        },
+        "back": {
+          "foldmap": "/mockup-pro/gildan-18500/back-foldmap.png",
+          "collarBottomY": 345,
+          "centerX": 500
+        }
+      },
+      "spots": ["full-front", "left-chest", "right-chest", "full-back", "back-neck", "names-numbers", "custom"],
+      "spotOverrides": {
+        "full-front": { "sizePlacement": "Hoodie Front", "belowCollarIn": 2.5 },
+        "left-chest": { "belowCollarIn": 2.5 },
+        "right-chest": { "belowCollarIn": 2.5 },
+        "full-back": { "sizePlacement": "Hoodie Back", "belowCollarIn": 2 },
+        "back-neck": { "belowCollarIn": 0.75 },
+        "names-numbers": { "belowCollarIn": 1.5 }
+      }
+    }
+  ],
+  "printSpots": [
+    { "id": "full-front",   "label": "Full front",     "view": "front", "anchor": "collar", "offsetXIn": 0,    "belowCollarIn": 3, "sizePlacement": "Adult Shirt" },
+    { "id": "left-chest",   "label": "Left chest",     "view": "front", "anchor": "collar", "offsetXIn": 4,    "belowCollarIn": 3, "sizePlacement": "Left Chest", "note": "Wearer's left = viewer's right, so +X." },
+    { "id": "right-chest",  "label": "Right chest",    "view": "front", "anchor": "collar", "offsetXIn": -4,   "belowCollarIn": 3, "sizePlacement": "Left Chest" },
+    { "id": "full-back",    "label": "Full back",      "view": "back",  "anchor": "collar", "offsetXIn": 0,    "belowCollarIn": 3, "sizePlacement": "Adult Shirt" },
+    { "id": "back-neck",    "label": "Back of neck",   "view": "back",  "anchor": "collar", "offsetXIn": 0,    "belowCollarIn": 1, "sizePlacement": "Custom", "defaultWidthIn": 3 },
+    { "id": "names-numbers","label": "Names + numbers","view": "back",  "anchor": "collar", "offsetXIn": 0,    "belowCollarIn": 3, "sizePlacement": "Custom", "personalized": true, "nameHeightIn": 2.6, "numberHeightIn": 8, "gapIn": 0.6 },
+    { "id": "left-sleeve",  "label": "Left sleeve",    "view": "side",  "anchor": "sleeve", "offsetXIn": 0,   "belowCollarIn": 0, "sizePlacement": "Sleeve" },
+    { "id": "right-sleeve", "label": "Right sleeve",   "view": "right", "anchor": "sleeve", "offsetXIn": 0,   "belowCollarIn": 0, "sizePlacement": "Sleeve", "note": "Drawn on the side photo mirrored." },
+    { "id": "custom",       "label": "Somewhere else", "view": "front", "anchor": "free",   "offsetXIn": 0,   "belowCollarIn": 0, "sizePlacement": "Custom", "note": "Customer drags it; store xIn/yIn from collar." }
+  ]
+}

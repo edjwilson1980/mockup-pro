@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+/* Brand (spec): ink #14181F, red #C8102E, blue #1F4E8C, ground #F2F4F7. */
+@theme {
+  --color-ink: #14181f;
+  --color-ink-2: #3a4250;
+  --color-muted: #5f6b7a;
+  --color-ground: #f2f4f7;
+  --color-card: #ffffff;
+  --color-line: #dde2e8;
+  --color-line-strong: #c3cad3;
+  --color-red: #c8102e;
+  --color-red-soft: #fbe8eb;
+  --color-blue: #1f4e8c;
+  --color-blue-soft: #e6eef8;
+  --color-good: #13804a;
+  --color-good-soft: #e3f4ea;
+  --color-warn: #9a5b00;
+  --color-warn-soft: #fff4e0;
+  --color-bad: #b42318;
+  --color-bad-soft: #fdecea;
+  --color-press: #0e1014;
+  --color-press-panel: #171a21;
+  --color-press-line: #2a303b;
+  --color-yellow: #ffd23f;
+}
+
+/* next/font sets these variables on <html>. */
+@theme inline {
+  --font-sans: var(--font-plex), system-ui, sans-serif;
+  --font-cond: var(--font-barlow-condensed), var(--font-plex), sans-serif;
+}
+
+html,
+body {
+  background: var(--color-ground);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-plex), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-blue);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+/* Transparent backdrop for mockups. */
+.checker {
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, #e5e7eb 25%, transparent 25%),
+    linear-gradient(-45deg, #e5e7eb 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e5e7eb 75%),
+    linear-gradient(-45deg, transparent 75%, #e5e7eb 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+}
+
+/* Heather swatches: a speckle so they read as heathered. */
+.heather {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.35) 1px, transparent 1.2px), radial-gradient(rgba(0, 0, 0, 0.18) 1px, transparent 1.2px);
+  background-size: 6px 6px, 7px 7px;
+  background-position: 0 0, 3px 2px;
+}
+
+/* Printing the shopping list: just the list. */
+@media print {
+  body * { visibility: hidden; }
+  .shopping-list, .shopping-list * { visibility: visible; }
+  .shopping-list { position: absolute; inset: 0 auto auto 0; width: 100%; border: 0; }
+  .no-print { display: none !important; }
+}
