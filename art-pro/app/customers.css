@@ -1,0 +1,21 @@
+/* Customers (Mockup Pro customer files) */
+.custgrid { display: grid; grid-template-columns: minmax(260px, 360px) minmax(0, 1fr); gap: 18px; align-items: start; }
+.custcol { display: flex; flex-direction: column; gap: 6px; max-height: 70vh; overflow: auto; }
+.custcol .custrow { width: 100%; }
+.orderlist { display: flex; flex-direction: column; gap: 12px; }
+.ordercard { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 10px; background: var(--card2); border: 1px solid var(--line); }
+.orderhead { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.orderhead .btn { margin-left: auto; }
+.orderdesign { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.orderdesign .thumb { width: 52px; height: 52px; object-fit: contain; border-radius: 6px; }
+.stat { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line2); text-transform: capitalize; }
+.stat.approved { border-color: #2b5c41; color: #bfebd2; }
+.stat.printing, .stat.ready { color: var(--muted); }
+.need { color: #ffcf7a; }
+@media (max-width: 860px) { .custgrid { grid-template-columns: minmax(0, 1fr); } }
+/* Clean start screen: no open-jobs or all-orders strips. Work starts from the customer's file. */
+.openstrip { display: none !important; }
+/* Header: the customer file being worked on */
+.custchip { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1px solid #2b3340; border-radius: 999px; font-size: 14px; color: inherit; text-decoration: none; }
+.custchip strong { font-weight: 700; }
+.custchip:hover { border-color: #7FCBEE; }
