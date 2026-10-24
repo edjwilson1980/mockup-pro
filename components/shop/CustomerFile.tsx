@@ -12,6 +12,7 @@ import { dataMode, reload, uploadFile, useDemo } from "@/lib/demo/store";
 import { SHIRT_SIZES, type Asset, type Customer, type DemoState, type Order } from "@/lib/demo/types";
 import { download } from "@/lib/art";
 import { buildGangSheet, planTransfers } from "@/lib/production";
+import { ArtProBar, ArtProLink, CmykLink } from "./ArtPro";
 
 const ACTIVE = ["submitted", "changes_requested", "proof_sent", "approved", "printing"];
 
@@ -109,15 +110,18 @@ export function CustomerFile({ fileNo }: { fileNo: string }) {
             <tbody>
               {orders.map((o) => (
                 <tr key={o.id} className={`border-t border-line ${o.id === order?.id ? "bg-blue-soft" : ""}`}>
-                  <td className="px-4 py-2.5">
+                  <td className="px-4 py-2.5 whitespace-nowrap">
                     <button type="button" className="font-semibold text-blue min-h-9" onClick={() => setPicked(o.id)}>
                       {o.orderNo}
                     </button>
                   </td>
-                  <td className="px-2 py-2.5 text-muted">{fmtDate(o.createdAt)}</td>
+                  <td className="px-2 py-2.5 text-muted whitespace-nowrap">{fmtDate(o.createdAt)}</td>
                   <td className="px-2 py-2.5 hidden sm:table-cell">{summaryText(o.designs)}</td>
-                  <td className="px-4 py-2.5">
+                  <td className="px-2 py-2.5">
                     <StatusBadge status={o.status} />
+                  </td>
+                  <td className="px-4 py-2.5 text-right whitespace-nowrap">
+                    <ArtProLink order={o} />
                   </td>
                 </tr>
               ))}
@@ -264,6 +268,7 @@ function Approval({ order, customer, demo }: { order: Order; customer: Customer;
                           {c.ok ? "✓" : "⚠"} {c.text}
                         </div>
                       ))}
+                      <CmykLink asset={a} />
                       {isPersonalized(s.spotId) && <div className="text-muted">{d.roster.length} names from the roster</div>}
                     </div>
                   </div>
@@ -274,7 +279,7 @@ function Approval({ order, customer, demo }: { order: Order; customer: Customer;
             <Mockup input={{ design: d, view: "back", assets }} alt={`${d.name}, back`} />
           </div>
         ))}
-        <p className="text-[13px] text-muted">Art engine not connected in the demo: art is shown as the customer sent it.</p>
+        <ArtProBar order={order} assets={assets} />
       </section>
 
       {/* 2. Gang sheet */}
