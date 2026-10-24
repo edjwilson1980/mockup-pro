@@ -18,9 +18,7 @@ type Props = {
   setStep: (id: string, step: keyof JobDesign['steps'], v: Step) => void
   removeDesign: (id: string) => void
   addFiles: (files: File[]) => void
-  createArt: (prompt: string) => void
   upscale: (id: string) => void
-  redraw: (id: string, instructions: string) => void
   next: () => void
   nextLabel: string
 }
@@ -50,8 +48,6 @@ export default function ArtworkStation(p: Props) {
   const [bg, setBg] = useState('#808080')
   const [zoom, setZoom] = useState(1)
   const [dl, setDl] = useState('')
-  const [instr, setInstr] = useState('')
-  const [prompt, setPrompt] = useState('')
   const dropRef = useRef<HTMLLabelElement>(null)
   const info = JOB_TYPES[job.job_type]
   const previewWidth = Math.min(info.defaultWidth, 24)
@@ -113,7 +109,7 @@ export default function ArtworkStation(p: Props) {
       <div className="artgrid">
         <div className="stagecol">
         <div className={`graystage ${zoom > 1 ? 'zoomed' : ''}`} style={{ background: bg }}>
-          {!sel && <p className="muted center">No art yet. Drop a file above, or describe new art on the right.</p>}
+          {!sel && <p className="muted center">No art yet. Drop a file above, or tell Art Pro on the right what to create.</p>}
           {sel && (busyNote ? <p className="center strong">{busyNote}</p> : preview?.key === sel.id ? <img src={preview.url} alt={`Design ${sel.n}`} onLoad={(e) => { const st = e.currentTarget.parentElement; if (st) { st.scrollLeft = (st.scrollWidth - st.clientWidth) / 2; st.scrollTop = (st.scrollHeight - st.clientHeight) / 2 } }} /> : <p className="muted">Loading…</p>)}
           {sel && rendering && !busyNote && <span className="rendering">Updating…</span>}
           {sel && <span className="stageinfo">#{sel.n} · {px[0]}×{px[1]} px · shown at {previewWidth}″ wide on {bgName(bg)} · CMYK view</span>}
@@ -134,16 +130,7 @@ export default function ArtworkStation(p: Props) {
                   <button type="button" className="tool" disabled={!!busyNote || !p.tools.upscale} title={p.tools.upscale ? '' : 'Not switched on yet'} onClick={() => p.upscale(sel.id)}>AI upscale</button>
                   <button type="button" className="btn small" disabled={!!busyNote} onClick={() => p.setStep(sel.id, 'fix', 'done')}>Looks good</button>
                 </div>
-                <form className="aifix" onSubmit={(e) => { e.preventDefault(); if (busyNote || !p.tools.create) return; p.redraw(sel.id, instr.trim()); setInstr('') }}>
-                  <label htmlFor="aifix-notes" className="small"><strong>Fix with AI (OpenAI)</strong></label>
-                  <textarea id="aifix-notes" className="input" rows={3} value={instr} disabled={!!busyNote}
-                    onChange={(e) => setInstr(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); e.currentTarget.form?.requestSubmit() } }}
-                    placeholder="What should it fix? e.g. fix the spelling, make the lines sharper, change red to blue. Leave empty for a clean redraw." />
-                  <button type="submit" className="btn primary small" disabled={!!busyNote || !p.tools.create} title={p.tools.create ? '' : 'Not switched on yet'}>
-                    {busyNote ? 'Working…' : 'Submit to OpenAI ▸'}
-                  </button>
-                </form>
+                <p className="muted small">Need changes? Tell Art Pro on the right, e.g. &ldquo;fix the spelling on #{sel.n}&rdquo; or &ldquo;redraw #{sel.n} cleaner&rdquo;.</p>
               </div>
 
               <div className={`astep ${sel.steps.background !== 'todo' ? 'done' : ''}`}>
@@ -179,12 +166,6 @@ export default function ArtworkStation(p: Props) {
               <button type="button" className="link" onClick={() => { if (confirmRemove(sel.n)) { p.removeDesign(sel.id); setSelId(null) } }}>Remove #{sel.n}</button>
             </>
           ) : null}
-
-          <div className="astep">
-            <h4><i>+</i>Create new art with AI</h4>
-            <input className="input" value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder='Describe it. Put exact text in "quotes".' />
-            <button type="button" className="tool" disabled={!p.tools.create || prompt.trim().length < 3} title={p.tools.create ? '' : 'Not switched on yet'} onClick={() => { p.createArt(prompt.trim()); setPrompt('') }}>Create art</button>
-          </div>
         </div>
       </div>
 

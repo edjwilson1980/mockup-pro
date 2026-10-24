@@ -3,8 +3,10 @@ import { NextResponse } from 'next/server'
 export const runtime = 'nodejs'
 export const maxDuration = 300
 
-const OPENAI_MODEL = process.env.ART_PRO_IMAGE_MODEL || 'gpt-image-2'
-const FALLBACK_MODEL = 'gpt-image-1'
+/** Image models, best first. ART_PRO_IMAGE_MODEL (if set) is tried before these. */
+const PREFERRED_MODELS = ['gpt-image-2', 'gpt-image-1.5', 'gpt-image-1', 'gpt-image-1-mini']
+const NO_MODEL_HELP =
+  'This OpenAI account cannot use any image model yet. Ask Ed to verify the organization at platform.openai.com → Settings → Organization → Verify and check that the project the API key belongs to allows image models.'
 /** The OpenAI key, under the standard name or the name it was saved with in Vercel. */
 const openaiKey = () => process.env.OPENAI_API_KEY || process.env.open_ai || process.env.OPEN_AI || ''
 // Real-ESRGAN on Replicate (pinned version; override with REPLICATE_UPSCALE_VERSION).
@@ -34,18 +36,62 @@ function openAiResult(j: OpenAiImage) {
   throw new Error(j.error?.message || 'No image returned')
 }
 
-/** Runs an OpenAI image call, retrying once on the older image model if this account can't use the newer one. */
-async function withModel<T>(run: (model: string) => Promise<T>) {
+/** A message the shop can act on; the raw OpenAI text stays in the server log. */
+class FriendlyError extends Error {}
+
+let modelCache: { models: string[]; at: number } | null = null
+
+/**
+ * The image models this key can actually use, best first. Asks OpenAI once (cached 10 minutes)
+ * instead of guessing a name: a guessed name that doesn't exist is what caused
+ * "The model `gpt-image-1` does not exist".
+ */
+async function imageModels(): Promise<string[]> {
+  if (modelCache && Date.now() - modelCache.at < 10 * 60_000) return modelCache.models
+  const wanted = [process.env.ART_PRO_IMAGE_MODEL, ...PREFERRED_MODELS].filter((m, i, a): m is string => !!m && a.indexOf(m) === i)
+  let models = wanted
   try {
-    return await run(OPENAI_MODEL)
+    const r = await fetch('https://api.openai.com/v1/models', { headers: { authorization: `Bearer ${openaiKey()}` } })
+    if (r.ok) {
+      const j = (await r.json()) as { data?: { id: string }[] }
+      const have = new Set((j.data || []).map((m) => m.id))
+      models = wanted.filter((m) => have.has(m))
+      // Any other image model this key has (e.g. a newer name) goes last.
+      for (const id of have) if (/^gpt-image/.test(id) && !models.includes(id)) models.push(id)
+    } else if (r.status === 401) {
+      throw new FriendlyError('The OpenAI key in Vercel was rejected. Make a new key at platform.openai.com → API keys and update OPENAI_API_KEY.')
+    }
   } catch (e) {
-    const m = e instanceof Error ? e.message : ''
-    if (OPENAI_MODEL !== FALLBACK_MODEL && /model|does not exist|not found|access|verif/i.test(m)) return run(FALLBACK_MODEL)
-    throw e
+    if (e instanceof FriendlyError) throw e
+    console.error('could not list OpenAI models; trying the preferred list', e)
   }
+  modelCache = { models, at: Date.now() }
+  return models
 }
 
-async function create(prompt: string, transparent: boolean, shape: string, model = OPENAI_MODEL) {
+const MODEL_PROBLEM = /model|does not exist|not found|access|verif|organization/i
+
+/** Runs an OpenAI image call on the best model this key can use, moving down the list only on model-access errors. */
+async function withModel<T>(run: (model: string) => Promise<T>) {
+  const models = await imageModels()
+  if (!models.length) throw new FriendlyError(NO_MODEL_HELP)
+  let first: unknown = null
+  for (const model of models) {
+    try {
+      return await run(model)
+    } catch (e) {
+      const m = e instanceof Error ? e.message : ''
+      console.error(`image model ${model} failed:`, m)
+      first ??= e
+      if (!MODEL_PROBLEM.test(m)) throw e
+    }
+  }
+  modelCache = null
+  const m = first instanceof Error ? first.message : ''
+  throw new FriendlyError(/verif|organization/i.test(m) ? NO_MODEL_HELP : `${NO_MODEL_HELP} (OpenAI said: ${m})`)
+}
+
+async function create(prompt: string, transparent: boolean, shape: string, model: string) {
   const key = openaiKey()
   const r = await fetch('https://api.openai.com/v1/images/generations', {
     method: 'POST',
@@ -66,7 +112,7 @@ async function create(prompt: string, transparent: boolean, shape: string, model
   return openAiResult(j)
 }
 
-async function redraw(image: string, prompt: string, transparent: boolean, shape: string, model = OPENAI_MODEL, exact = false) {
+async function redraw(image: string, prompt: string, transparent: boolean, shape: string, model: string, exact = false) {
   const key = openaiKey()
   const form = new FormData()
   const blob = dataUrlToBlob(image)
@@ -163,5 +209,6 @@ export async function GET(req: Request) {
     if (!up.ok || !up.body) return err('download failed', 502)
     return new Response(up.body, { headers: { 'content-type': up.headers.get('content-type') || 'image/png', 'cache-control': 'no-store' } })
   }
-  return NextResponse.json({ create: Boolean(openaiKey()), upscale: Boolean(process.env.REPLICATE_API_TOKEN || openaiKey()), upscaleVia: process.env.REPLICATE_API_TOKEN ? 'replicate' : openaiKey() ? 'openai' : null, model: OPENAI_MODEL })
+  const models = openaiKey() ? await imageModels().catch(() => []) : []
+  return NextResponse.json({ create: Boolean(openaiKey()), upscale: Boolean(process.env.REPLICATE_API_TOKEN || openaiKey()), upscaleVia: process.env.REPLICATE_API_TOKEN ? 'replicate' : openaiKey() ? 'openai' : null, model: models[0] || null })
 }

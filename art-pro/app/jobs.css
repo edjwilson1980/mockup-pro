@@ -122,7 +122,3 @@
 .mpstrip .need { color: #ffcf7a; }
 .sendshop a.btn { text-decoration: none; justify-content: center; }
 
-/* Fix with AI: notes + submit */
-.aifix { display: grid; gap: 6px; margin-top: 10px; }
-.aifix textarea { resize: vertical; min-height: 64px; font: inherit; }
-.aifix button { justify-self: start; }

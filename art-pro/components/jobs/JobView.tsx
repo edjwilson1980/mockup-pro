@@ -260,6 +260,21 @@ export default function JobView({ id, onClose }: { id: string; onClose: () => vo
     return null
   }
 
+  /**
+   * When the chat AI can't be reached, still do the two things the old "Fix with AI" and
+   * "Create new art" boxes did: new art from a description, or a redraw with the instructions.
+   */
+  function fallbackActions(text: string): Action[] | string {
+    const j = ref.current!
+    const designs = j.data.designs
+    const hashes = Array.from(text.matchAll(/#\s*(\d+)/g)).map((m) => parseInt(m[1], 10))
+    const wantsNew = /^\s*(create|generate|draw|design)\b/i.test(text) || /\bnew (art|artwork|logo|design|image)\b/i.test(text)
+    if (!designs.length || wantsNew) return [{ name: 'create_image', input: { prompt: text.replace(/^\s*create(?: new)?(?: art)?:?\s*/i, '') || text } }]
+    if (hashes.length) return [{ name: 'redraw_design', input: { targets: hashes, instructions: text } }]
+    if (designs.length === 1) return [{ name: 'redraw_design', input: { targets: [designs[0].n], instructions: text } }]
+    return `Which design should I change? Say it with the number, e.g. "#1 ${text}".`
+  }
+
   async function send(text: string) {
     const v = text.trim()
     const j = ref.current
@@ -273,7 +288,13 @@ export default function JobView({ id, onClose }: { id: string; onClose: () => vo
     try {
       const history = [...(j.data.chat || []), { from: 'you', text: v } as ChatMsg].slice(-12).map((m) => ({ role: m.from === 'you' ? 'user' : 'assistant', content: m.text }))
       const r = await fetch(withBase('/api/chat'), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ job: summary(), messages: history }) })
-      if (!r.ok) throw new Error(String(r.status))
+      if (!r.ok) {
+        const fb = fallbackActions(v)
+        if (typeof fb === 'string') say(fb)
+        else if (!tools.create) say('The AI chat and the AI image tools are both off right now. The buttons on the left still work.')
+        else { say('The AI chat is offline, so I sent this straight to the image AI.'); applyActions(fb) }
+        return
+      }
       const data = (await r.json()) as { reply?: string; actions?: Action[] }
       const c = applyActions(data.actions || [])
       if (data.reply) say(data.reply, c || [])
@@ -325,7 +346,7 @@ export default function JobView({ id, onClose }: { id: string; onClose: () => vo
         <section className="card stationcard">
           {job.station === 'artwork' && (
             <ArtworkStation job={job} working={working} tools={tools} patchDesign={patchDesign} setStep={setStep} removeDesign={removeDesign}
-              addFiles={addFiles} createArt={createArt} upscale={(d) => aiFix(d, 'upscale')} redraw={(d, s) => aiFix(d, 'redraw', s)} next={next} nextLabel={nextLabel} />
+              addFiles={addFiles} upscale={(d) => aiFix(d, 'upscale')} next={next} nextLabel={nextLabel} />
           )}
           {job.station === 'mockup' && (
             <MockupStation job={job} patchDesign={patchDesign} setColor={(c) => mutateData((d) => ({ ...d, color: c }))} goBack={() => goTo('artwork')} next={next} nextLabel={nextLabel} />
@@ -351,14 +372,14 @@ export default function JobView({ id, onClose }: { id: string; onClose: () => vo
         <aside className="card chatcard">
           <h3>Art Pro <span className="muted small">· {STATION_LABEL[job.station]}</span></h3>
           <div className="chatlog" ref={logRef}>
-            {(job.data.chat || []).length === 0 && <div className="brow bot"><div className="bubble bot">Ask me anything about this job: “upscale #1”, “halftone at 35 lpi”, “make #2 left chest”, “24 black shirts”.</div></div>}
+            {(job.data.chat || []).length === 0 && <div className="brow bot"><div className="bubble bot">Tell me anything about this job. Fix art: “fix the spelling on #1”, “make #1 sharper”, “upscale #2”. New art: “create a lion logo that says “Lions Football” in red and black”. Also: “halftone at 35 lpi”, “make #2 left chest”, “24 black shirts”.</div></div>}
             {(job.data.chat || []).map((m, i) => <div key={i} className={`brow ${m.from}`}><div className={`bubble ${m.from}`}>{m.text}</div></div>)}
             {thinking && <div className="brow bot"><div className="bubble bot muted">Art Pro is thinking…</div></div>}
             {chips.length > 0 && !thinking && <div className="chips">{chips.map((c) => <button key={c} type="button" className="chip" onClick={() => send(c)}>{c}</button>)}</div>}
           </div>
           <form className="askrow" onSubmit={(e) => { e.preventDefault(); void send(draft) }}>
             <label htmlFor="ask" className="sr-only">Message Art Pro</label>
-            <input id="ask" className="input askinput" value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Tell Art Pro what you need" autoComplete="off" />
+            <input id="ask" className="input askinput" value={draft} onChange={(e) => setDraft(e.target.value)} placeholder="Fix, create, size, halftone… tell Art Pro" autoComplete="off" />
             <button type="submit" className="btn primary" disabled={thinking}>Send</button>
           </form>
         </aside>
